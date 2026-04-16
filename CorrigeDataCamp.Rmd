@@ -15,16 +15,26 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
 library(tidyr)
 library(readxl)
-
+library(dplyr)
 ```
 
 
-CARGA DE DATOS: #revisar la ruta para que funcione en cualquier pc
+CARGA DE DATOS: ruta relativa
+uso : https://regex101.com/
 
 ```{r}
-data <- read_excel("C:/Users/Jhaky/Documents/TratamientoDatos/CorrigeDataCamp/data/AlumnosTD25_26.xlsx")
-archivos <- list.files("C:/Users/Jhaky/Documents/TratamientoDatos/CorrigeDataCamp/data/archivos")
-(puntos <- list.files("C:/Users/Jhaky/Documents/TratamientoDatos/CorrigeDataCamp/data/AlumnosTD25_26.xlsx", pattern = "$.txt"))
+data <- read_excel("data/AlumnosTD25_26.xlsx")
+
+(archivos <- list.files("data/archivos"))
+
+nombres <- (list.files("data/archivos/", 
+                              pattern = "assignsubmission_file$", TRUE))
+
+nombres
+
+apellidos <- nombres %>% unlist() %>% strsplit(",") %>% sapply("[", 1) 
+#extraigo elementos por índice "[", selecciono el primer indice (1)
+apellidos
 ```
 
 
