@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyr)
 library(readxl)
 library(dplyr)
+library(writexl)
 ```
 
 
@@ -78,17 +79,36 @@ DATA.FRAME:
 
 evalua_df <- data.frame(
   apellidos = apellidos,
-  puntos    = puntos_valor,
+  puntos_valor    = puntos_valor,
   NomFile   = ifelse(is.na(puntos_valor), NA, "puntos.txt"),
-  Puntos    = as.character(puntos_valor),
+  Puntos_char    = as.character(puntos_valor),
   stringsAsFactors = FALSE
 )
-```
 
+evalua_df <- evalua_df %>% arrange(apellidos)
+
+#UNIR DATAFRAMES
+
+alumnos_df <- data
+colnames(alumnos_df) <- c(
+  "nombre",
+  "apellidos",
+  "usuario",
+  "ID",
+  "correo"
+)
+
+(colnames(alumnos_df))
+(colnames(evalua_df))
+
+final_df <- alumnos_df %>% left_join(evalua_df, by =c("apellidos"= "apellidos"))
+final_df
+```
 
 GUARDADO:
 ```{r}
-save(
+write_xlsx(evalua_df, "NotasRIntermedio.xlsx")
+write_xlsx(final_df, "AlumnosNotas.xlsx")
 
 ```
 
