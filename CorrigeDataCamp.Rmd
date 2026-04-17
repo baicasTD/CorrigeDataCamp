@@ -42,13 +42,15 @@ apellidos
 
 Importa el fichero puntos.txt y extrae la puntuación obtenida (readlines).
 
-python
+ejemplo python:
+
 puntos <- numeric(length(archivos))
 
 for (i in seq_along(archivos)) {
   ruta <- paste0("data/archivos/", archivos[i], "/puntos.txt")
   puntos[i] <- as.numeric(readLines(ruta))
 }
+
 ``
 ```{r}
 rutas <- paste0("data/archivos/", archivos, "/puntos.txt")
@@ -57,6 +59,16 @@ puntos <- sapply(rutas, function(ruta) {
     if (file.exists(ruta)) {as.numeric(readLines(ruta, warn = FALSE))
   } else {NA}})
 
+puntos_valor <- sapply(puntos, function(x) {
+  if (length(x) >= 1) {
+    as.numeric(x[1])
+  } else {
+    NA
+  }
+})
+
+(puntos_valor <- unname(puntos_valor))
+
 ```
 
 
@@ -64,6 +76,19 @@ DATA.FRAME:
 
 ```{r}
 
+evalua_df <- data.frame(
+  apellidos = apellidos,
+  puntos    = puntos_valor,
+  NomFile   = ifelse(is.na(puntos_valor), NA, "puntos.txt"),
+  Puntos    = as.character(puntos_valor),
+  stringsAsFactors = FALSE
+)
+```
+
+
+GUARDADO:
+```{r}
+save(
 
 ```
 
