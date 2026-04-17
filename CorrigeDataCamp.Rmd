@@ -25,16 +25,38 @@ uso : https://regex101.com/
 ```{r}
 data <- read_excel("data/AlumnosTD25_26.xlsx")
 
-(archivos <- list.files("data/archivos"))
+archivos <- list.files("data/archivos")
 
 nombres <- (list.files("data/archivos/", 
                               pattern = "assignsubmission_file$", TRUE))
 
 nombres
+```
 
+Extrae los apellidos del usuario de la ruta del fichero de puntuaciones (strsplit)
+```{r}
 apellidos <- nombres %>% unlist() %>% strsplit(",") %>% sapply("[", 1) 
 #extraigo elementos por índice "[", selecciono el primer indice (1)
 apellidos
+```
+
+Importa el fichero puntos.txt y extrae la puntuación obtenida (readlines).
+
+python
+puntos <- numeric(length(archivos))
+
+for (i in seq_along(archivos)) {
+  ruta <- paste0("data/archivos/", archivos[i], "/puntos.txt")
+  puntos[i] <- as.numeric(readLines(ruta))
+}
+``
+```{r}
+rutas <- paste0("data/archivos/", archivos, "/puntos.txt")
+
+puntos <- sapply(rutas, function(ruta) {
+    if (file.exists(ruta)) {as.numeric(readLines(ruta, warn = FALSE))
+  } else {NA}})
+
 ```
 
 
